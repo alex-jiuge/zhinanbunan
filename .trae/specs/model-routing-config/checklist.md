@@ -1,0 +1,14 @@
+- [x] 模型配置类型系统完整定义（ModelConfig, FeatureModelBinding, ModelUsageRecord, ModelRegistryState）
+- [x] localStorage 存储层实现 CRUD、加密存储、序列化
+- [x] ModelRegistry 核心类实现 getModelForFeature, setBinding, getAllConfigs 等方法
+- [x] ModelRouter 路由层实现 routeRequest、优先级切换、故障检测、重试机制
+- [x] UsageTracker 监控类实现记录调用、查询统计、导出功能
+- [x] generateAIResponse 修改为支持 featureKey 参数，内部走模型路由层
+- [x] 所有 API route 更新调用方式，传入正确的 featureKey
+- [x] 后台模型配置页面 UI 完整（模块列表、模型选择、参数表单、添加自定义模型）
+- [x] Header 添加"模型配置"入口链接
+- [x] 使用统计标签页完整（调用次数、token 图表、功能模块分布、成功率、响应时间）
+- [x] 默认配置初始化逻辑实现（GLM-4-Flash 默认、各模块合理绑定）
+- [x] npm run build 编译通过，无 TypeScript 错误
+- [x] 模型故障切换逻辑可验证（模拟失败时自动切换备选）
+- [x] API 密钥加密存储可验证（localStorage 中非明文）
