@@ -9,25 +9,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // 导出时跳过的路由（API routes 在纯静态模式下不可用）
-  exportPathMap: async function () {
-    return {
-      '/': { page: '/' },
-      '/onboarding/': { page: '/onboarding' },
-      '/assessment/': { page: '/assessment' },
-      '/campus/': { page: '/campus' },
-      '/campus/academic/major-analysis/': { page: '/campus/academic/major-analysis' },
-      '/campus/navigator/radar/': { page: '/campus/navigator/radar' },
-      '/career-path/': { page: '/career-path' },
-      '/chat-history/': { page: '/chat-history' },
-      '/graduation/': { page: '/graduation' },
-      '/graduation/career/jd-analyzer/': { page: '/graduation/career/jd-analyzer' },
-      '/graduation/compass/city-match/': { page: '/graduation/compass/city-match' },
-      '/graduation/family-bridge/': { page: '/graduation/family-bridge' },
-      '/internships/': { page: '/internships' },
-      '/profile/': { page: '/profile' },
-    };
-  },
   webpack: (config: any, { isServer, dev }: { isServer: boolean, dev: boolean }) => {
     if (!dev) {
       config.cache = false;
