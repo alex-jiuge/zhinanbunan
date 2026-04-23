@@ -11,8 +11,9 @@ const nextConfig = {
     if (!isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 20000,
+        maxInitialRequests: 50,
+        minSize: 10000,
+        maxSize: 20000000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
@@ -21,14 +22,26 @@ const nextConfig = {
                 /[\\/]node_modules[\\/](.*?)([\\/]|$)/
               );
               if (packageName) {
-                return `npm.${packageName[1].replace('@', '')}`;
+                const name = packageName[1];
+                if (name.startsWith('@')) {
+                  const [scope, pkg] = name.split('/');
+                  return `npm.${scope}.${pkg}`;
+                }
+                return `npm.${name}`;
               }
               return 'vendor';
             },
+            reuseExistingChunk: true,
+            enforce: true,
+          },
+          default: {
+            minChunks: 2,
+            reuseExistingChunk: true,
           },
         },
       };
     }
+    config.optimization.minimize = true;
     return config;
   },
   
@@ -37,6 +50,9 @@ const nextConfig = {
   
   // 生产环境禁用 source map
   productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 export default nextConfig;

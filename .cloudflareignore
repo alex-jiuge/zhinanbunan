@@ -1,0 +1,5 @@
+# 忽略 webpack 缓存
+cache/**
+.cache/**
+node_modules/**
+.git/**
