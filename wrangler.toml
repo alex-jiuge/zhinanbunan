@@ -1,0 +1,7 @@
+[build]
+command = "npm run build"
+pages_build_output_dir = ".next"
+
+[build.environment]
+NODE_VERSION = "20"
+NEXT_TELEMETRY_DISABLED = "1"
