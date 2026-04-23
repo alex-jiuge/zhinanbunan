@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { callZhipuAI } from '@/lib/ai/client-call';
 import { ArrowLeft, Loader2, Copy } from 'lucide-react';
 
 const CONCERNS_OPTIONS = ['工作不稳定', '不是铁饭碗', '加班太多', '离家太远', '薪资不高', '发展受限'];
@@ -47,13 +48,67 @@ export default function FamilyBridgePage() {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/analysis/family-bridge', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await response.json();
-      setResult(data);
+      const systemPrompt = `You are a psychology consultant and career planner specializing in family communication.
+
+## Output Format
+Must return strictly valid JSON:
+
+{
+  "parentFriendlyDescription": {
+    "title": "Introduction title for parents",
+    "analogy": "Use real-life analogy to explain this career",
+    "stability": "Objective analysis of stability",
+    "income": "Objective analysis of income (with specific numbers)",
+    "development": "Objective analysis of development prospects"
+  },
+  "dataPoints": [
+    {
+      "claim": "Possible parent concern",
+      "counterData": "Specific data to address it"
+    }
+  ],
+  "conversationGuide": [
+    {
+      "parentSays": "What parents might say",
+      "suggestedReply": "Suggested reply"
+    }
+  ],
+  "compromiseSuggestions": [
+    "Compromise suggestion 1",
+    "Compromise suggestion 2"
+  ]
+}`;
+
+      const concernsText = form.parentConcerns?.join(', ') || '';
+      const childText = form.childArguments ? `Child's thoughts: ${form.childArguments}` : '';
+      const taskPrompt = `Target Career: ${form.targetCareer}\nTarget City: ${form.targetCity}\nParent Concerns: ${concernsText}\n${childText}\n\nPlease generate a communication plan and return JSON results.`;
+
+      const content = await callZhipuAI(
+        [{ role: 'user' as const, content: taskPrompt }],
+        systemPrompt,
+        { maxTokens: 4096 }
+      );
+
+      let analysisResult;
+      try {
+        const jsonStart = content.indexOf('{');
+        const jsonEnd = content.lastIndexOf('}');
+        analysisResult = JSON.parse(content.slice(jsonStart, jsonEnd + 1));
+      } catch {
+        analysisResult = {
+          parentFriendlyDescription: {
+            title: `What is a ${form.targetCareer}?`,
+            analogy: 'Like a core coordinator of a team',
+            stability: 'Although not a government job, industry demand is high',
+            income: 'Starting salary is generally 8000-15000 RMB',
+            development: 'Can progress to management roles',
+          },
+          dataPoints: [{ claim: 'Is it stable?', counterData: 'Industry demand continues to grow' }],
+          conversationGuide: [{ parentSays: 'Is this job stable?', suggestedReply: 'The industry has large demand, it is easy to find another job' }],
+          compromiseSuggestions: ['Try for 1-2 years first', 'Prefer large companies, relatively more stable'],
+        };
+      }
+      setResult(analysisResult);
     } catch (error) {
       console.error('Generation failed:', error);
     } finally {

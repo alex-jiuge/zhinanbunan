@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { callZhipuAI } from '@/lib/ai/client-call';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { TagList } from '@/components/analysis/TagList';
 
@@ -30,13 +31,64 @@ export default function JDAnalyzerPage() {
   const handleAnalyze = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/analysis/jd', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await response.json();
-      setResult(data);
+      const systemPrompt = `You are a senior HR and career planner, skilled at "translating" job descriptions to help job seekers understand the reality of positions.
+
+## Output Format
+Must return strictly valid JSON:
+
+{
+  "roleOverview": {
+    "title": "Job title",
+    "reality": "Description of actual job content",
+    "seniority": "Level"
+  },
+  "dailyWork": [
+    {"task": "Task", "frequency": "Frequency", "description": "Description"}
+  ],
+  "skillRequirements": {
+    "mustHave": ["Must-have 1", "Must-have 2"],
+    "niceToHave": ["Nice-to-have 1", "Nice-to-have 2"],
+    "hiddenRequirements": ["Hidden requirement 1", "Hidden requirement 2"]
+  },
+  "salaryRange": {
+    "entry": "Entry-level range",
+    "mid": "Mid-level range",
+    "senior": "Senior-level range"
+  },
+  "redFlags": ["Red flag 1", "Red flag 2"],
+  "matchAnalysis": {
+    "overallMatch": 72,
+    "matchedSkills": ["Matched skill"],
+    "gapSkills": ["Gap skill"],
+    "suggestions": ["Suggestion 1", "Suggestion 2"]
+  }
+}`;
+
+      const targetRoleText = form.targetRole ? `Target Role: ${form.targetRole}` : '';
+      const taskPrompt = `JD Content:\n${form.jdText}\n\n${targetRoleText}\n\nPlease parse and return JSON results.`;
+
+      const content = await callZhipuAI(
+        [{ role: 'user' as const, content: taskPrompt }],
+        systemPrompt,
+        { maxTokens: 4096 }
+      );
+
+      let analysisResult;
+      try {
+        const jsonStart = content.indexOf('{');
+        const jsonEnd = content.lastIndexOf('}');
+        analysisResult = JSON.parse(content.slice(jsonStart, jsonEnd + 1));
+      } catch {
+        analysisResult = {
+          roleOverview: { title: form.targetRole || 'Unknown Position', reality: 'Need further understanding', seniority: 'Entry/Mid-level' },
+          dailyWork: [{ task: 'Daily work', frequency: 'Daily', description: 'Execute based on job requirements' }],
+          skillRequirements: { mustHave: ['Professional ability'], niceToHave: ['Related experience'], hiddenRequirements: ['Stress resistance'] },
+          salaryRange: { entry: '8K-15K', mid: '15K-30K', senior: '30K+' },
+          redFlags: ['Watch out for overtime culture'],
+          matchAnalysis: { overallMatch: 60, matchedSkills: ['Basic ability'], gapSkills: ['Practical experience'], suggestions: ['Supplement related skills', 'Gain internship experience'] },
+        };
+      }
+      setResult(analysisResult);
     } catch (error) {
       console.error('Analysis failed:', error);
     } finally {

@@ -7,6 +7,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useChatStore } from '@/store/chat-store';
 import { useUserStore } from '@/store/user-store';
 import { SELF_EXPLORATION_STEPS } from '@/lib/ai/prompts/self-exploration';
+import { callZhipuAI } from '@/lib/ai/client-call';
 import { ChatWindow } from '@/components/chat/ChatWindow';
 import { ChatInput } from '@/components/chat/ChatInput';
 import { StepProgress } from '@/components/layout/StepProgress';
@@ -63,32 +64,27 @@ export default function OnboardingPage() {
 
     try {
       const currentPrompt = SELF_EXPLORATION_STEPS[step];
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          conversationType: 'self-exploration',
-          step: step + 1,
-          totalSteps: 8,
-          systemPrompt: currentPrompt.systemPrompt,
-          message: userMessage,
-          conversationHistory: messages.map((m) => ({ role: m.role, content: m.content })),
-        }),
-      });
+      const conversationMessages: { role: 'user' | 'assistant'; content: string }[] = messages.map((m) => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+      }));
 
-      if (!response.ok) throw new Error('API request failed');
+      const content = await callZhipuAI(
+        conversationMessages,
+        currentPrompt.systemPrompt,
+        { maxTokens: 2000 }
+      );
 
-      const data: ChatApiResponse = await response.json();
       const aiMsg: Message = {
         id: nanoid(),
         role: 'assistant',
-        content: data.content,
+        content,
         createdAt: new Date().toISOString(),
       };
       setMessages([...messages, userMsg, aiMsg]);
-      setSuggestedReplies(data.suggestedReplies || []);
-      setCurrentStep(data.step);
+      const nextStep = step + 1;
+      setSuggestedReplies(nextStep < SELF_EXPLORATION_STEPS.length ? SELF_EXPLORATION_STEPS[nextStep].suggestedReplies : []);
+      setCurrentStep(nextStep);
       setAiResponseComplete(true);
       setIsLoading(false);
     } catch (error) {
@@ -114,19 +110,87 @@ export default function OnboardingPage() {
   const handleGenerateProfile = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/profile/onboarding', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          messages: messages.map((m) => ({ role: m.role, content: m.content })),
-          completedSteps: currentStep,
-        }),
-      });
+      const systemPrompt = `You are a warm, professional college life planning consultant. Based on the following conversation, generate a personal growth profile for the user.
 
-      if (!response.ok) throw new Error('Failed to generate profile');
+## Output Format
+Must return strictly valid JSON:
 
-      const profile: UserProfile = await response.json();
+{
+  "personalityType": "Personality type description",
+  "values": ["Freedom", "Creativity"],
+  "interests": ["Technology", "Writing"],
+  "strengths": ["Logical analysis", "Deep thinking"],
+  "weaknesses": ["Public speaking", "Quick decisions"],
+  "lifestylePref": {
+    "pace": "Moderate pace",
+    "environment": "City with cultural atmosphere",
+    "social": "Small circle deep socializing"
+  },
+  "academicScore": 7.5,
+  "practiceScore": 6.0,
+  "socialScore": 5.5,
+  "skillScore": 7.0,
+  "mentalScore": 7.0,
+  "summary": "About 200 characters comprehensive profile",
+  "isCompleted": true
+}
+
+## Notes
+- All scores based on conversation, range 1-10
+- Summary should be warm, sincere, personalized
+- Personality type should be concise and clear`;
+
+      const conversationText = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
+      const content = await callZhipuAI(
+        [{ role: 'user' as const, content: `Conversation record:\n${conversationText}\n\nPlease generate user profile JSON.` }],
+        systemPrompt,
+        { maxTokens: 2000 }
+      );
+
+      let profileData: Record<string, unknown>;
+      try {
+        const jsonStart = content.indexOf('{');
+        const jsonEnd = content.lastIndexOf('}');
+        const jsonStr = content.slice(jsonStart, jsonEnd + 1);
+        profileData = JSON.parse(jsonStr);
+      } catch {
+        profileData = {
+          personalityType: 'Explorer',
+          values: ['Freedom', 'Growth', 'Creativity'],
+          interests: ['Learning', 'Exploration'],
+          strengths: ['Thinking ability'],
+          weaknesses: ['Practical experience'],
+          lifestylePref: { pace: 'Moderate', environment: 'Open', social: 'Small circle' },
+          academicScore: 6.5,
+          practiceScore: 5.5,
+          socialScore: 5.5,
+          skillScore: 6.0,
+          mentalScore: 6.5,
+          summary: 'You are someone who is exploring yourself.',
+          isCompleted: true,
+        };
+      }
+
+      const profile: UserProfile = {
+        id: crypto.randomUUID(),
+        userId: userId,
+        personalityType: profileData.personalityType as string,
+        values: profileData.values as string[],
+        interests: profileData.interests as string[],
+        strengths: profileData.strengths as string[],
+        weaknesses: profileData.weaknesses as string[],
+        lifestylePref: profileData.lifestylePref as UserProfile['lifestylePref'],
+        academicScore: profileData.academicScore as number,
+        practiceScore: profileData.practiceScore as number,
+        socialScore: profileData.socialScore as number,
+        skillScore: profileData.skillScore as number,
+        mentalScore: profileData.mentalScore as number,
+        summary: profileData.summary as string,
+        isCompleted: true,
+        completedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
       setProfile(profile);
       localStorage.setItem('compass-user-profile', JSON.stringify(profile));
       setIsCompleted(true);
