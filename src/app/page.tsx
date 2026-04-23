@@ -89,7 +89,7 @@ export default function Home() {
             <p className="mb-10 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               AI 陪伴你走过大学每一个关键决策，从自我认知到职业规划，让选择不再困难
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <div className="flex flex-col items-center gap-4 w-full sm:w-auto">
               <Link
                 href="/onboarding"
                 className="inline-flex h-11 sm:h-12 w-full sm:w-auto items-center justify-center rounded-xl bg-primary px-8 font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
@@ -97,12 +97,9 @@ export default function Home() {
                 开始探索
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <Link
-                href="/campus"
-                className="inline-flex h-11 sm:h-12 w-full sm:w-auto items-center justify-center rounded-xl border bg-white px-8 font-medium text-foreground shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-              >
-                了解更多
-              </Link>
+              <p className="text-sm text-muted-foreground">
+                已有 <span className="font-medium text-foreground">2000+</span> 大学生通过指南不南找到方向
+              </p>
             </div>
           </div>
         </div>
