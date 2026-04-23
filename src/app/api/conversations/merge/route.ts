@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { ConversationManager } from "@/lib/conversation/manager"
 
+export const dynamic = 'force-static';
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()

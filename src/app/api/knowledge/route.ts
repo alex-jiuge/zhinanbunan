@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { PromptManager } from '@/lib/ai/prompt-manager/manager';
 
+export const dynamic = 'force-static';
+
 // GET: 搜索知识库 / 获取分类知识
 export async function GET(request: Request) {
   try {

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { generateAIResponse } from '@/lib/ai/generate';
 import { UserProfile } from '@/types';
 
+export const dynamic = 'force-static';
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();

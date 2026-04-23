@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { PromptManager } from '@/lib/ai/prompt-manager/manager';
 
+export const dynamic = 'force-static';
+
 // GET: List all prompt templates
 export async function GET(request: Request) {
   try {

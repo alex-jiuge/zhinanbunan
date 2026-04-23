@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { PromptManager } from '@/lib/ai/prompt-manager/manager';
 
+export const dynamic = 'force-static';
+
+// 为静态导出生成参数
+export function generateStaticParams() {
+  return [{ id: 'default' }];
+}
+
 // GET: 获取版本历史
 export async function GET(request: Request) {
   try {

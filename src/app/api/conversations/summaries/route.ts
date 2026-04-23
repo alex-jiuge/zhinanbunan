@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { conversationStorage } from "@/lib/conversation/storage"
 import { ConversationManager } from "@/lib/conversation/manager"
 
+export const dynamic = 'force-static';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)

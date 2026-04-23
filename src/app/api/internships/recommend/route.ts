@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { SAMPLE_INTERNSHIPS, Internship } from '@/types/internship';
 
+export const dynamic = 'force-static';
+
 interface UserProfile {
   major?: string;
   city?: string;
