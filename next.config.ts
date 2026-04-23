@@ -6,9 +6,14 @@ const nextConfig = {
   output: 'standalone',
   
   // 优化 webpack 打包，减小输出文件体积
-  webpack: (config: any, { isServer }: { isServer: boolean }) => {
-    // 排除不必要的文件
-    if (!isServer) {
+  webpack: (config: any, { isServer, dev }: { isServer: boolean, dev: boolean }) => {
+    // 生产环境禁用持久化缓存，避免生成大型 .pack 文件
+    if (!dev) {
+      config.cache = false;
+    }
+    
+    // 客户端代码拆分优化
+    if (!isServer && !dev) {
       config.optimization.splitChunks = {
         chunks: 'all',
         maxInitialRequests: 50,
