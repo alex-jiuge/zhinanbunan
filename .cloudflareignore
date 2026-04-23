@@ -1,5 +1,0 @@
-# 忽略 webpack 缓存
-.next/cache/**
-.cache/**
-node_modules/**
-.git/**
