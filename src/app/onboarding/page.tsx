@@ -42,12 +42,13 @@ export default function OnboardingPage() {
     const welcomeMessage: Message = {
       id: nanoid(),
       role: 'assistant',
-      content: '你好！我是你的 AI 伙伴小航。我将陪你一起探索自己，找到人生的方向。准备好了吗？',
+      content: '你好！我是你的 AI 伙伴小航。我将陪你一起探索自己，找到人生的方向。准备好了吗？点击下方的快捷回复开始吧！',
       createdAt: new Date().toISOString(),
     };
     setMessages([welcomeMessage]);
     setIsLoading(false);
-    sendToAI(0, '我准备好了，开始吧！');
+    setAiResponseComplete(true);
+    setSuggestedReplies(SELF_EXPLORATION_STEPS[0].suggestedReplies);
   };
 
   const sendToAI = async (step: number, userMessage: string) => {
@@ -94,6 +95,9 @@ export default function OnboardingPage() {
   };
 
   const handleSend = (message: string) => {
+    if (currentStep >= SELF_EXPLORATION_STEPS.length) {
+      return;
+    }
     sendToAI(currentStep, message);
   };
 
@@ -110,39 +114,40 @@ export default function OnboardingPage() {
   const handleGenerateProfile = async () => {
     setIsLoading(true);
     try {
-      const systemPrompt = `You are a warm, professional college life planning consultant. Based on the following conversation, generate a personal growth profile for the user.
+      const systemPrompt = `你是一位温暖、专业的大学生人生规划顾问。请根据以下对话记录，为用户生成一份个人成长画像。
 
-## Output Format
-Must return strictly valid JSON:
+## 输出格式
+必须返回严格有效的 JSON：
 
 {
-  "personalityType": "Personality type description",
-  "values": ["Freedom", "Creativity"],
-  "interests": ["Technology", "Writing"],
-  "strengths": ["Logical analysis", "Deep thinking"],
-  "weaknesses": ["Public speaking", "Quick decisions"],
+  "personalityType": "性格类型描述（中文）",
+  "values": ["价值观1", "价值观2"],
+  "interests": ["兴趣1", "兴趣2"],
+  "strengths": ["优势1", "优势2"],
+  "weaknesses": ["短板1", "短板2"],
   "lifestylePref": {
-    "pace": "Moderate pace",
-    "environment": "City with cultural atmosphere",
-    "social": "Small circle deep socializing"
+    "pace": "生活节奏（中文）",
+    "environment": "理想环境（中文）",
+    "social": "社交偏好（中文）"
   },
   "academicScore": 7.5,
   "practiceScore": 6.0,
   "socialScore": 5.5,
   "skillScore": 7.0,
   "mentalScore": 7.0,
-  "summary": "About 200 characters comprehensive profile",
+  "summary": "约200字的中文综合成长建议，温暖真诚、个性化",
   "isCompleted": true
 }
 
-## Notes
-- All scores based on conversation, range 1-10
-- Summary should be warm, sincere, personalized
-- Personality type should be concise and clear`;
+## 注意事项
+- 所有评分基于对话内容，范围 1-10
+- 总结建议必须用中文，温暖、真诚、有针对性
+- 性格类型描述用中文，简洁清晰
+- 所有字段内容都使用中文`;
 
       const conversationText = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
       const content = await callZhipuAI(
-        [{ role: 'user' as const, content: `Conversation record:\n${conversationText}\n\nPlease generate user profile JSON.` }],
+        [{ role: 'user' as const, content: `对话记录：\n${conversationText}\n\n请根据以上对话生成用户画像 JSON，所有内容使用中文。` }],
         systemPrompt,
         { maxTokens: 2000 }
       );
@@ -194,7 +199,7 @@ Must return strictly valid JSON:
       setProfile(profile);
       localStorage.setItem('compass-user-profile', JSON.stringify(profile));
       setIsCompleted(true);
-      router.push('/');
+      router.push('/campus/navigator/radar');
     } catch (error) {
       console.error('Profile generation error:', error);
       setIsLoading(false);
