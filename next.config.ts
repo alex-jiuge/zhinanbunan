@@ -4,9 +4,29 @@
 const nextConfig = {
   // 纯静态导出，适配 Cloudflare Pages（不支持 SSR/API routes）
   output: 'export',
+  // 静态导出时，构建产物默认输出到 out/ 目录
   trailingSlash: true,
   images: {
     unoptimized: true,
+  },
+  // 导出时跳过的路由（API routes 在纯静态模式下不可用）
+  exportPathMap: async function () {
+    return {
+      '/': { page: '/' },
+      '/onboarding/': { page: '/onboarding' },
+      '/assessment/': { page: '/assessment' },
+      '/campus/': { page: '/campus' },
+      '/campus/academic/major-analysis/': { page: '/campus/academic/major-analysis' },
+      '/campus/navigator/radar/': { page: '/campus/navigator/radar' },
+      '/career-path/': { page: '/career-path' },
+      '/chat-history/': { page: '/chat-history' },
+      '/graduation/': { page: '/graduation' },
+      '/graduation/career/jd-analyzer/': { page: '/graduation/career/jd-analyzer' },
+      '/graduation/compass/city-match/': { page: '/graduation/compass/city-match' },
+      '/graduation/family-bridge/': { page: '/graduation/family-bridge' },
+      '/internships/': { page: '/internships' },
+      '/profile/': { page: '/profile' },
+    };
   },
   webpack: (config: any, { isServer, dev }: { isServer: boolean, dev: boolean }) => {
     if (!dev) {
