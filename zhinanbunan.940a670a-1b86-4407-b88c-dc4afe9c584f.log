@@ -1,0 +1,127 @@
+2026-04-23T12:39:44.761479Z	Cloning repository...
+2026-04-23T12:39:45.926105Z	From https://github.com/alex-jiuge/zhinanbunan
+2026-04-23T12:39:45.926399Z	 * branch            a9d635184564d4ed7983ee8a688f4b0d8d2dc5f5 -> FETCH_HEAD
+2026-04-23T12:39:45.926454Z	
+2026-04-23T12:39:45.951297Z	HEAD is now at a9d6351 refactor(首页): 移除了解更多按钮并添加用户统计信息
+2026-04-23T12:39:45.951667Z	
+2026-04-23T12:39:45.993423Z	
+2026-04-23T12:39:45.99398Z	Using v2 root directory strategy
+2026-04-23T12:39:46.007027Z	Success: Finished cloning repository files
+2026-04-23T12:39:48.176063Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-04-23T12:39:48.176558Z	
+2026-04-23T12:39:49.271843Z	No Wrangler configuration file found. Continuing.
+2026-04-23T12:39:49.471108Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2026-04-23T12:39:49.471658Z	Installing project dependencies: npm clean-install --progress=false
+2026-04-23T12:39:52.632019Z	npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2026-04-23T12:39:53.477266Z	npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2026-04-23T12:39:53.58215Z	npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-04-23T12:39:54.064016Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-04-23T12:39:54.856648Z	npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+2026-04-23T12:39:54.973824Z	npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+2026-04-23T12:39:58.878532Z	npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2026-04-23T12:40:07.859602Z	
+2026-04-23T12:40:07.859913Z	added 682 packages, and audited 683 packages in 18s
+2026-04-23T12:40:07.859973Z	
+2026-04-23T12:40:07.860018Z	237 packages are looking for funding
+2026-04-23T12:40:07.86006Z	  run `npm fund` for details
+2026-04-23T12:40:07.861191Z	
+2026-04-23T12:40:07.861311Z	found 0 vulnerabilities
+2026-04-23T12:40:07.94548Z	Executing user command: npm run build
+2026-04-23T12:40:08.270227Z	
+2026-04-23T12:40:08.270549Z	> compass-app@0.1.0 build
+2026-04-23T12:40:08.270656Z	> next build
+2026-04-23T12:40:08.270725Z	
+2026-04-23T12:40:09.501685Z	⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-04-23T12:40:09.507692Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-04-23T12:40:09.508192Z	This information is used to shape Next.js' roadmap and prioritize features.
+2026-04-23T12:40:09.508343Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-04-23T12:40:09.508434Z	https://nextjs.org/telemetry
+2026-04-23T12:40:09.508519Z	
+2026-04-23T12:40:09.604336Z	   ▲ Next.js 15.5.15
+2026-04-23T12:40:09.604573Z	
+2026-04-23T12:40:09.704277Z	   Creating an optimized production build ...
+2026-04-23T12:40:26.089308Z	 ✓ Compiled successfully in 16.2s
+2026-04-23T12:40:26.093139Z	   Linting and checking validity of types ...
+2026-04-23T12:40:30.213368Z	
+2026-04-23T12:40:30.21369Z	./src/app/career-path/page.tsx
+2026-04-23T12:40:30.21379Z	6:10  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+2026-04-23T12:40:30.213933Z	7:29  Warning: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+2026-04-23T12:40:30.214021Z	7:41  Warning: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+2026-04-23T12:40:30.214112Z	7:52  Warning: 'CardDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+2026-04-23T12:40:30.21418Z	
+2026-04-23T12:40:30.214343Z	./src/app/onboarding/page.tsx
+2026-04-23T12:40:30.214402Z	18:11  Warning: 'ChatApiResponse' is defined but never used.  @typescript-eslint/no-unused-vars
+2026-04-23T12:40:30.214504Z	38:6  Warning: React Hook useEffect has missing dependencies: 'initializeConversation', 'setUserId', and 'userId'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+2026-04-23T12:40:30.214563Z	
+2026-04-23T12:40:30.214596Z	info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2026-04-23T12:40:33.395905Z	   Collecting page data ...
+2026-04-23T12:40:36.63303Z	   Generating static pages (0/35) ...
+2026-04-23T12:40:37.225554Z	   Generating static pages (8/35) 
+2026-04-23T12:40:37.401789Z	   Generating static pages (17/35) 
+2026-04-23T12:40:37.469924Z	   Generating static pages (26/35) 
+2026-04-23T12:40:37.819855Z	 ✓ Generating static pages (35/35)
+2026-04-23T12:40:38.655726Z	   Finalizing page optimization ...
+2026-04-23T12:40:38.656291Z	   Collecting build traces ...
+2026-04-23T12:40:45.980077Z	   Exporting (0/2) ...
+2026-04-23T12:40:46.291731Z	 ✓ Exporting (2/2)
+2026-04-23T12:40:46.302077Z	
+2026-04-23T12:40:46.306392Z	Route (app)                                 Size  First Load JS
+2026-04-23T12:40:46.30655Z	┌ ○ /                                      178 B         154 kB
+2026-04-23T12:40:46.306634Z	├ ○ /_not-found                            193 B         150 kB
+2026-04-23T12:40:46.306679Z	├ ○ /admin/model-config                  4.66 kB         348 kB
+2026-04-23T12:40:46.306718Z	├ ○ /admin/prompt-manager                12.1 kB         234 kB
+2026-04-23T12:40:46.306764Z	├ ƒ /api/analysis/city                     186 B         150 kB
+2026-04-23T12:40:46.306808Z	├ ƒ /api/analysis/family-bridge            186 B         150 kB
+2026-04-23T12:40:46.307144Z	├ ƒ /api/analysis/jd                       186 B         150 kB
+2026-04-23T12:40:46.307211Z	├ ƒ /api/analysis/major                    186 B         150 kB
+2026-04-23T12:40:46.307486Z	├ ƒ /api/chat                              186 B         150 kB
+2026-04-23T12:40:46.30757Z	├ ƒ /api/conversations/merge               186 B         150 kB
+2026-04-23T12:40:46.307891Z	├ ƒ /api/conversations/summaries           186 B         150 kB
+2026-04-23T12:40:46.308071Z	├ ƒ /api/conversations/summarize           186 B         150 kB
+2026-04-23T12:40:46.308142Z	├ ƒ /api/internships/recommend             186 B         150 kB
+2026-04-23T12:40:46.308383Z	├ ƒ /api/knowledge                         186 B         150 kB
+2026-04-23T12:40:46.308454Z	├ ƒ /api/profile/onboarding                186 B         150 kB
+2026-04-23T12:40:46.308745Z	├ ƒ /api/prompts                           186 B         150 kB
+2026-04-23T12:40:46.309025Z	├ ● /api/prompts/[id]/versions             186 B         150 kB
+2026-04-23T12:40:46.30912Z	├   └ /api/prompts/default/versions
+2026-04-23T12:40:46.309181Z	├ ƒ /api/user-info                         186 B         150 kB
+2026-04-23T12:40:46.309228Z	├ ƒ /api/user-info/changes                 186 B         150 kB
+2026-04-23T12:40:46.309556Z	├ ƒ /api/user-info/infer                   186 B         150 kB
+2026-04-23T12:40:46.309665Z	├ ○ /assessment                          4.26 kB         228 kB
+2026-04-23T12:40:46.309715Z	├ ○ /campus                                186 B         150 kB
+2026-04-23T12:40:46.309748Z	├ ○ /campus/academic/major-analysis      1.94 kB         224 kB
+2026-04-23T12:40:46.310122Z	├ ○ /campus/navigator/radar              1.82 kB         340 kB
+2026-04-23T12:40:46.310225Z	├ ○ /career-path                         3.58 kB         217 kB
+2026-04-23T12:40:46.310393Z	├ ○ /chat-history                        10.9 kB         236 kB
+2026-04-23T12:40:46.31056Z	├ ○ /graduation                            186 B         150 kB
+2026-04-23T12:40:46.310642Z	├ ○ /graduation/career/jd-analyzer       3.19 kB         225 kB
+2026-04-23T12:40:46.310778Z	├ ○ /graduation/compass/city-match        3.7 kB         347 kB
+2026-04-23T12:40:46.310838Z	├ ○ /graduation/family-bridge            4.94 kB         225 kB
+2026-04-23T12:40:46.310964Z	├ ○ /internships                         4.18 kB         227 kB
+2026-04-23T12:40:46.311288Z	├ ○ /onboarding                          7.69 kB         230 kB
+2026-04-23T12:40:46.311381Z	└ ○ /profile                             4.94 kB         225 kB
+2026-04-23T12:40:46.311419Z	+ First Load JS shared by all             149 kB
+2026-04-23T12:40:46.311448Z	  ├ chunks/npm.next-d018982dc3964290.js   147 kB
+2026-04-23T12:40:46.311479Z	  └ other shared chunks (total)           2.5 kB
+2026-04-23T12:40:46.311516Z	
+2026-04-23T12:40:46.311547Z	
+2026-04-23T12:40:46.311582Z	○  (Static)   prerendered as static content
+2026-04-23T12:40:46.311639Z	●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+2026-04-23T12:40:46.311681Z	ƒ  (Dynamic)  server-rendered on demand
+2026-04-23T12:40:46.311716Z	
+2026-04-23T12:40:46.470991Z	Finished
+2026-04-23T12:40:47.277512Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-04-23T12:40:47.278076Z	
+2026-04-23T12:40:48.383489Z	No Wrangler configuration file found. Continuing.
+2026-04-23T12:40:48.384404Z	Note: No functions dir at /functions found. Skipping.
+2026-04-23T12:40:48.384519Z	Validating asset output directory
+2026-04-23T12:40:51.179693Z	Deploying your site to Cloudflare's global network...
+2026-04-23T12:40:52.982338Z	Uploading... (231/314)
+2026-04-23T12:40:53.558936Z	Uploading... (258/314)
+2026-04-23T12:40:53.694077Z	Uploading... (286/314)
+2026-04-23T12:40:54.412048Z	Uploading... (314/314)
+2026-04-23T12:40:54.41236Z	✨ Success! Uploaded 83 files (231 already uploaded) (1.85 sec)
+2026-04-23T12:40:54.412426Z	
+2026-04-23T12:40:54.905548Z	✨ Upload complete!
+2026-04-23T12:40:57.961293Z	Success: Assets published!
+2026-04-23T12:40:59.703829Z	Success: Your site was deployed!
